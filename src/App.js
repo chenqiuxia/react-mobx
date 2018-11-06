@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Routes from 'routes/index';
-import './App.less';
+import './App.scss';
 import { Provider } from 'mobx-react';
 import stores from 'stores/index';
 

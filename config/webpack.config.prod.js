@@ -172,56 +172,47 @@ module.exports = {
 					// tags. If you use code splitting, however, any async bundles will still
 					// use the "style" loader inside the async code so CSS from them won't be
 					// in the main CSS file.
-					{
-						test: /\.(css|less)$/,
-						loader: ExtractTextPlugin.extract(
-							Object.assign(
-								{
-									fallback: {
-										loader: require.resolve( 'style-loader' ),
-										options: {
-											hmr: false,
-										},
-									},
-									use: [
-										{
-											loader: require.resolve( 'css-loader' ),
-											options: {
-												importLoaders: 1,
-												minimize: true,
-												sourceMap: shouldUseSourceMap,
-											},
-										},
-										{
-											loader: require.resolve( 'postcss-loader' ),
-											options: {
-												// Necessary for external CSS imports to work
-												// https://github.com/facebookincubator/create-react-app/issues/2677
-												ident: 'postcss',
-												plugins: () => [
-													require( 'postcss-flexbugs-fixes' ),
-													autoprefixer( {
-														browsers: [
-															'>1%',
-															'last 4 versions',
-															'Firefox ESR',
-															'not ie < 9', // React doesn't support IE8 anyway
-														],
-														flexbox: 'no-2009',
-													} ),
-												],
-											},
-										},
-										{
-											loader: require.resolve( 'less-loader' ),    // 划重点
-										}
-									],
-								},
-								extractTextPluginOptions
-							)
-						),
-						// Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
-					},
+                    {
+                        test : /\.scss$/,
+                        use  : ExtractTextPlugin.extract(
+                            Object.assign(
+                                {
+                                    fallback: require.resolve('style-loader'),
+                                    use: [
+                                        {
+                                            loader: require.resolve('css-loader'), // translates CSS into CommonJS
+                                            options: {
+                                                sourceMap     : true,
+                                                minimize      : true,
+                                                importLoaders : 3,
+                                            },
+                                        },
+                                        require.resolve('resolve-url-loader'), // resolves relative paths in url() statements based on the original source file
+                                        {
+                                            loader: require.resolve('postcss-loader'),
+                                            options: {
+                                                ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+                                                plugins: () => [
+                                                    require('postcss-flexbugs-fixes'),
+                                                    autoprefixer({
+                                                        flexbox: 'no-2009',
+                                                    }),
+                                                ],
+                                            },
+                                        },
+
+                                        {
+                                            loader: require.resolve('sass-loader'),  // compiles Sass to CSS,
+                                            options: {
+                                                includePaths: [`${paths.appNodeModules}/normalize-scss/sass`],
+                                            },
+                                        },
+                                    ]
+                                },
+                                extractTextPluginOptions
+                            )
+                        ),
+                    },
 					// "file" loader makes sure assets end up in the `build` folder.
 					// When you `import` an asset, you get its filename.
 					// This loader doesn't use a "test" so it will catch all modules

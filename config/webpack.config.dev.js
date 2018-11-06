@@ -164,43 +164,38 @@ module.exports = {
 					// "style" loader turns CSS into JS modules that inject <style> tags.
 					// In production, we use a plugin to extract that CSS to a file, but
 					// in development "style" loader enables hot editing of CSS.
-					{
-						test: /\.(css|less)$/,
-						use: [
-							require.resolve( 'style-loader' ),
-							{
-								loader: require.resolve( 'css-loader' ),
-								options: {
-									importLoaders: 1,
-								},
-							},
-							{
-								loader: require.resolve( 'postcss-loader' ),
-								options: {
-									// Necessary for external CSS imports to work
-									// https://github.com/facebookincubator/create-react-app/issues/2677
-									ident: 'postcss',
-									plugins: () => [
-										require( 'postcss-flexbugs-fixes' ),
-										autoprefixer( {
-											browsers: [
-												'>1%',
-												'last 4 versions',
-												'Firefox ESR',
-												'not ie < 9', // React doesn't support IE8 anyway
-											],
-											flexbox: 'no-2009',
-										} ),
-										px2rem( { remUnit: 75 } )
-									],
-								},
-							},
-
-							{
-								loader: require.resolve( 'less-loader' ),
-							}
-						],
-					},
+                    {
+                        test: /\.scss$/,
+                        use: [
+                            require.resolve('style-loader'),
+                            {
+                                loader: require.resolve('css-loader'), // translates CSS into CommonJS
+                                options: {
+                                    sourceMap: true,
+                                    importLoaders: 3,
+                                },
+                            },
+                            require.resolve('resolve-url-loader'), // resolves relative paths in url() statements based on the original source file
+                            {
+                                loader: require.resolve('postcss-loader'),
+                                options: {
+                                    ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
+                                    plugins: () => [
+                                        require('postcss-flexbugs-fixes'),
+                                        autoprefixer({
+                                            flexbox: 'no-2009',
+                                        }),
+                                    ],
+                                },
+                            },
+                            {
+                                loader: require.resolve('sass-loader'),  // compiles Sass to CSS,
+                                options: {
+                                    includePaths: [`${paths.appNodeModules}/normalize-scss/sass`],
+                                },
+                            },
+                        ],
+                    },
 					// "file" loader makes sure those assets get served by WebpackDevServer.
 					// When you `import` an asset, you get its (virtual) filename.
 					// In production, they would get copied to the `build` folder.

@@ -13,7 +13,7 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div>
-				<p>{this.props.homeStore.title}</p>
+				<p>{this.props.homeStore.title}1</p>
 				<Link to="/about">go to About</Link>
 
 				<div style={{ textAlign: 'left', width: '100%', margin: 'auto' }}>

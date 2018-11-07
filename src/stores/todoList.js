@@ -1,10 +1,20 @@
-import { observable } from 'mobx';
-import {computed} from "mobx/lib/mobx";
+import { observable ,computed, action} from 'mobx';
 
 const TodoList = observable({
-    todos: [],
+    id: Math.ceil(Math.random() * 100),
+    todos: [{
+        title: 'what',
+        finished: false
+    }],
+    text: 'this is todoList page',
     @computed get unfinishedTodoCount() {
         return this.todos.filter(todo => !todo.finished).length
+    },
+    @action addNew (title) {
+        this.title.push({
+            title: title,
+            finished: false
+        })
     }
 } );
 

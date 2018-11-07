@@ -1,32 +1,36 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {decorate, observable, computed} from 'mobx'
-import {observer} from 'mobx-react';
+import {observer, inject} from 'mobx-react';
+import NewTodo from 'components/newTodo'
 
-class Todo {
-    id = Math.random()
-    title = ''
-    finished = false
-}
-decorate(Todo, {
-    title: observable,
-    finished: observable
-})
+@inject('todoList')
+// class Todo {
+//     id = Math.random()
+//     title = ''
+//     finished = false
+// }
+// decorate(Todo, {
+//     title: observable,
+//     finished: observable
+// })
 
-class TodoList {
-    @observable todos = [];
-    @computed get unfinishedTodoCount() {
-        return this.todos.filter(todo => !todo.finished).length
-    }
-}
+// class TodoList {
+//     @observable todos = [];
+//     @computed get unfinishedTodoCount() {
+//         return this.todos.filter(todo => !todo.finished).length
+//     }
+// }
+@observer
 class TodoListView extends  Component{
     render() {
         return <div>
             <ul>
-                {this.props.todoList.todos.map(todo =>
-                <TodoView todo={todo} key={todo.id}/>
+                <p>{this.props.todoList.text}</p>
+                <p>{this.props.todoList.id}</p>
+                {this.props.todoList.todos.map((todo,index) =>
+                <TodoView todo={todo} key={index}/>
                 )}
             </ul>
+            <NewTodo/>
         </div>
     }
 }
@@ -39,5 +43,4 @@ const TodoView = observer(({todo}) =>
         />{todo.title}
     </li>
 )
-const store = new TodoList()
-ReactDOM.render(<TodoListView todoList={store}/>, document.getElementById(''))
+export default TodoListView;

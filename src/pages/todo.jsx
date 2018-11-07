@@ -21,13 +21,18 @@ import NewTodo from 'components/newTodo'
 // }
 @observer
 class TodoListView extends  Component{
+    // onToggleCompleted () {
+    //     console.log('this')
+    //     const todo = this.props.todoList
+    //     todo.finished = !todo.finished
+    // }
     render() {
         return <div>
             <ul>
                 <p>{this.props.todoList.text}</p>
                 <p>{this.props.todoList.id}</p>
                 {this.props.todoList.todos.map((todo,index) =>
-                <TodoView todo={todo} key={index}/>
+                <TodoView todo={todo} key={index} />
                 )}
             </ul>
             <NewTodo/>

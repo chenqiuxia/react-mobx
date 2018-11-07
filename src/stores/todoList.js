@@ -11,6 +11,7 @@ const TodoList = observable({
         return this.todos.filter(todo => !todo.finished).length
     },
     @action addNew (title) {
+        console.log(title)
         this.title.push({
             title: title,
             finished: false

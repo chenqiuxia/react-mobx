@@ -1,4 +1,8 @@
+import {observer} from "mobx-react/index";
 import React, {Component} from 'react';
+import { inject} from 'mobx-react';
+@inject('todoList')
+    @observer
  class NewTodo extends Component{
      constructor (props) {
          super(props)
@@ -10,10 +14,8 @@ import React, {Component} from 'react';
          console.log('新增')
      }
      handleChange (e) {
-         console.log(e.target.value)
-         this.setState({
-             newValue: e.target.value
-         })
+         // console.log(e.target.value)
+         this.props.todoList.addNew(e.target.value)
      }
      render () {
          return <div>
